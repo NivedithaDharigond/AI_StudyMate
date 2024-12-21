@@ -1,0 +1,184 @@
+<!-- mynotes.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Notes</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(142, 177, 176, 0.9); /* Adjust the RGB values and increase alpha for less transparency */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .note {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .note h3 {
+            color: #333;
+        }
+
+        .note p {
+            color: #666;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .edit-btn,
+        .delete-btn {
+            background-color: #08bcb6;
+            color: #fff;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .return-btn {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="notesContainer">
+        <h2>My Notes</h2>
+        <!-- Notes will be dynamically added here -->
+    </div>
+
+    <button class="return-btn" onclick="returnToDashboard()">Return to Dashboard</button>
+
+    <script>
+        // Function to fetch and display notes from local storage
+        function showNotes() {
+            var notesContainer = document.getElementById('notesContainer');
+            var notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+            // Clear existing notes
+            notesContainer.innerHTML = '';
+
+            // Display each note
+            notes.forEach(function (note, index) {
+                var noteDiv = document.createElement('div');
+                noteDiv.classList.add('note');
+
+                var noteHeading = document.createElement('h3');
+                noteHeading.textContent = 'Note ' + (index + 1) + ': ' + note.topicName;
+
+                var noteDescription = document.createElement('p');
+                noteDescription.textContent = 'Description: ' + note.description;
+
+                var noteDate = document.createElement('p');
+                noteDate.textContent = 'Date: ' + note.date;
+
+                var btnGroup = document.createElement('div');
+                btnGroup.classList.add('btn-group');
+
+                var editBtn = document.createElement('button');
+                editBtn.classList.add('edit-btn');
+                editBtn.textContent = 'Edit';
+                editBtn.onclick = function () {
+                    editNote(index);
+                };
+
+                var deleteBtn = document.createElement('button');
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = function () {
+                    deleteNote(index);
+                };
+
+                btnGroup.appendChild(editBtn);
+                btnGroup.appendChild(deleteBtn);
+
+                noteDiv.appendChild(noteHeading);
+                noteDiv.appendChild(noteDescription);
+                noteDiv.appendChild(noteDate);
+                noteDiv.appendChild(btnGroup);
+
+                notesContainer.appendChild(noteDiv);
+            });
+        }
+
+        // Function to edit a note
+        function editNote(index) {
+            // You can implement the editing logic based on your requirements
+            alert('Edit note at index ' + index);
+        }
+
+        // Function to delete a note
+        function editNote(index) {
+            var notes = JSON.parse(localStorage.getItem('notes')) || [];
+            var noteToEdit = notes[index];
+
+            // Prompt the user for new values
+            var newTopicName = prompt('Enter new topic name:', noteToEdit.topicName);
+            var newDescription = prompt('Enter new description:', noteToEdit.description);
+            var newDate = prompt('Enter new date:', noteToEdit.date);
+
+            // Update the note with new values
+            if (newTopicName !== null && newDescription !== null && newDate !== null) {
+                noteToEdit.topicName = newTopicName;
+                noteToEdit.description = newDescription;
+                noteToEdit.date = newDate;
+
+                // Save the updated notes to local storage
+                localStorage.setItem('notes', JSON.stringify(notes));
+
+                // Refresh the displayed notes after editing
+                showNotes();
+            }// Refresh the displayed notes after deletion // Refresh the displayed notes after deletion
+        }
+        // Function to delete a note
+function deleteNote(index) {
+    var notes = JSON.parse(localStorage.getItem('notes')) || [];
+
+    // Remove the note at the specified index
+    notes.splice(index, 1);
+
+    // Save the updated notes to local storage
+    localStorage.setItem('notes', JSON.stringify(notes));
+
+    // Refresh the displayed notes after deletion
+    showNotes();
+}
+
+
+        // Function to return to the dashboard
+        function returnToDashboard() {
+            window.location.href = '/subjects'; // Replace '/subjects' with the actual route
+        }
+
+        // Show notes when the page loads
+        showNotes();
+    </script>
+</body>
+
+</html>

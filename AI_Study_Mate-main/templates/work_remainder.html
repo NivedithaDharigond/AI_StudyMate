@@ -1,0 +1,25 @@
+<tbody>
+    {% set start_hour = 8 %}
+    {% set start_minute = 45 %}
+    {% set index = 1 %}
+    {% set total_subjects = schedule|length %}
+    {% while index <= total_subjects %}
+        {% set end_hour = start_hour %}
+        {% set end_minute = start_minute + 60 %}
+        {% if end_minute >= 60 %}
+            {% set end_hour = start_hour + 1 %}
+            {% set end_minute = end_minute - 60 %}
+        {% endif %}
+        <tr>
+            <td>{{ '%02d:%02d-%02d:%02d' | format(start_hour, start_minute, end_hour, end_minute) }}</td>
+            <td>{{ schedule[index - 1] }}</td>
+        </tr>
+        {% set start_hour = end_hour %}
+        {% set start_minute = end_minute %}
+        {% if index == 1 %}
+            {% set start_hour = start_hour + 1 %}
+            {% set start_minute = start_minute + 60 %}
+        {% endif %}
+        {% set index = index + 1 %}
+    {% endwhile %}
+</tbody>

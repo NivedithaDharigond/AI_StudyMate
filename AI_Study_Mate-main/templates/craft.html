@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Notes</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: rgba(126, 179, 177, 0.9); /* Adjust the RGB values and increase alpha for less transparency */
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button {
+            background-color: #08bcb6;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .return-btn {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create Notes</h2>
+        <form id="notesForm">
+            <div class="form-group">
+                <label for="topicName">Topic Name:</label>
+                <input type="text" id="topicName" name="topicName" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <button type="button" id="createNotesBtn">Create Notes</button>
+            <button type="button" class="return-btn" onclick="returnToDashboard()">Return to Dashboard</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('createNotesBtn').addEventListener('click', function () {
+            // Get form data
+            var topicName = document.getElementById('topicName').value;
+            var description = document.getElementById('description').value;
+            var date = document.getElementById('date').value;
+
+            // Save notes to local storage
+            var notes = JSON.parse(localStorage.getItem('notes')) || [];
+            notes.push({ topicName, description, date });
+            localStorage.setItem('notes', JSON.stringify(notes));
+
+            // Redirect to dashboard
+            window.location.href = '/subjects'; // Replace '/subjects' with the actual route
+        });
+
+        function returnToDashboard() {
+            window.location.href = '/subjects'; // Replace '/subjects' with the actual route
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Videos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #9cc4e0; /* Set your desired background color */
+    }
+
+    header {
+      background-color: black; /* Set the background color of the header */
+      padding: 10px;
+    }
+
+    header a {
+      color: #ffffff; /* Set the text color of the links */
+      text-decoration: none;
+      margin-right: 20px;
+      font-size: 18px;
+    }
+
+    .container {
+      background-color:#9cc4e0;
+    }
+
+    h1 {
+      color:black;
+    }
+
+    #video-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .video {
+      width: 300px;
+      border: 1px solid #dee2e6;
+      border-radius: 5px;
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+
+    iframe {
+      width: 100%;
+      height: 200px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+    }
+    input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #555;
+        }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/subjects" class="nav-link">Home</a>
+    <!-- Add more navigation links as needed -->
+  </header>
+
+  <div class="container">
+    <h1 class="mt-4">Study Videos</h1>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" id="searchInput" placeholder="Enter a study topic">
+      <div class="input-group-append">
+        <button class="btn btn-primary" onclick="searchVideos()">Search</button>
+      </div>
+    </div>
+
+    <div id="video-container" class="d-flex flex-wrap"></div>
+  </div>
+
+
+<script>
+    // Your existing JavaScript code here
+ function searchVideos() {
+      const searchInput = document.getElementById('searchInput').value;
+      const videoContainer = document.getElementById('video-container');
+      videoContainer.innerHTML = ''; // Clear previous results
+
+      // YouTube API key (replace with your own key)
+      const apiKey = 'AIzaSyBeUUUwY2B2YMvOjkrstdYLVi7_nI1-5XE';
+
+      // YouTube Data API endpoint for searching videos
+      const apiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${searchInput}&type=video&key=${apiKey}`;
+
+      // Fetch videos from YouTube API
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          const videos = data.items;
+
+          // Display videos on the webpage
+          videos.forEach(video => {
+            const videoId = video.id.videoId;
+            const videoTitle = video.snippet.title;
+
+            const iframe = document.createElement('iframe');
+            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+            iframe.width = 300;
+            iframe.height = 200;
+            iframe.allowFullscreen = true;
+
+            const videoDiv = document.createElement('div');
+            videoDiv.classList.add('video');
+            videoDiv.appendChild(iframe);
+
+            videoContainer.appendChild(videoDiv);
+          });
+        })
+        .catch(error => console.error('Error fetching videos:', error));
+    }
+  </script>
+</body>
+</html>
